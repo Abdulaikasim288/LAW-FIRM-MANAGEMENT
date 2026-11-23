@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABDUL-HAMEED ZAKARIA ESQ. - Law Firm Management</title>
+<style>
+* { box-sizing: border-box; font-family: Arial, sans-serif; }
+body { margin:0; background:#eef2f7; }
+header { background:#0f2a44; color:white; padding:25px 15px 18px; text-align:center; }
+header h1 { margin:0; font-size:26px; letter-spacing:1px; }
+header p { margin:6px 0 0; font-size:14px; opacity:0.9; }
+.date-bar { background:linear-gradient(90deg,#c9a227,#ffd700,#c9a227); color:#0f2a44; text-align:center; padding:11px; font-weight:bold; font-size:14px; }
+.container { max-width:1000px; margin:auto; padding:15px; }
+.stats { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px; }
+.stat { flex:1; min-width:120px; padding:14px; border-radius:10px; text-align:center; box-shadow:0 3px 8px rgba(0,0,0,0.1); }
+.stat:nth-child(1){ background:#dbeafe; } .stat:nth-child(2){ background:#dcfce7; } .stat:nth-child(3){ background:#fef9c3; } .stat:nth-child(4){ background:#fee2e2; }
+.stat b { display:block; font-size:20px; color:#0f2a44; }
+.stat span { font-size:12px; color:#444; font-weight:bold; }
+.dashboard { background:#e0e7ff; padding:20px; border-radius:12px; box-shadow:0 3px 8px rgba(0,0,0,0.1); margin-bottom:15px; border:2px solid #a5b4fc; }
+.dashboard h2 { margin:0 0 15px; color:#0f2a44; text-align:center; font-size:20px; }
+.btn-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.btn-grid button { padding:14px; border:none; border-radius:8px; font-size:15px; font-weight:bold; cursor:pointer; color:white; box-shadow:0 2px 5px rgba(0,0,0,0.15); }
+.btn-grid button:nth-child(1){ background:#2563eb; } .btn-grid button:nth-child(2){ background:#16a34a; } .btn-grid button:nth-child(3){ background:#eab308; color:#111; } .btn-grid button:nth-child(4){ background:#9333ea; } .btn-grid button:nth-child(5){ background:#dc2626; } .btn-grid button:nth-child(6){ background:#0891b2; } .btn-grid button:nth-child(7){ background:#ea580c; } .btn-grid button:nth-child(8){ background:#0f766e; }
+.box { padding:20px; border-radius:12px; box-shadow:0 3px 8px rgba(0,0,0,0.1); margin-bottom:15px; display:none; border:2px solid transparent; }
+.box.show { display:block; }
+#box-register{ background:#dbeafe; border-color:#60a5fa; }
+#box-search{ background:#fef9c3; border-color:#facc15; }
+#box-view{ background:#dcfce7; border-color:#4ade80; }
+#box-report{ background:#f3e8ff; border-color:#c084fc; }
+.box h3 { margin-top:0; color:#0f2a44; text-align:center; font-size:19px; }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.grid input, .grid select, .grid textarea { width:100%; padding:11px; border:2px solid #93c5fd; border-radius:8px; font-size:14px; background:#fffbeb; color:#111; }
+.grid input:focus, .grid select:focus, .grid textarea:focus { outline:none; border-color:#0f2a44; background:white; }
+#clientId{ background:#fef08a; font-weight:bold; text-align:center; }
+#regDate{ background:#bbf7d0; font-weight:bold; }
+.full { grid-column: span 2; }
+.btn-save { background:#0f2a44; color:white; width:100%; padding:13px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; margin-top:10px; font-size:16px; }
+.top-row { display:flex; gap:10px; flex-wrap:wrap; }
+.top-row input, .top-row select { flex:1; padding:11px; border:2px solid #86efac; border-radius:8px; min-width:150px; background:#fff7ed; }
+.btn-export { background:#16a34a; color:white; padding:10px 16px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; }
+table { width:100%; border-collapse:collapse; margin-top:12px; font-size:13px; background:white; border-radius:8px; overflow:hidden; }
+th, td { padding:10px; border-bottom:1px solid #e5e7eb; text-align:left; }
+th { background:#0f2a44; color:white; }
+tr:nth-child(even){ background:#f0fdf4; } tr:nth-child(odd){ background:#fffbeb; }
+.badge { padding:4px 8px; border-radius:20px; font-size:11px; font-weight:bold; }
+.Active { background:#fde68a; color:#92400e; } .Won { background:#bbf7d0; color:#14532d; } .Lost { background:#fecaca; color:#7f1d1d; } .Pending { background:#e0e7ff; color:#3730a3; }
+.btn-edit { background:#facc15; padding:6px 10px; border:none; border-radius:5px; font-size:12px; font-weight:bold; cursor:pointer; }
+.btn-del { background:#ef4444; color:white; padding:6px 10px; border:none; border-radius:5px; font-size:12px; cursor:pointer; }
+footer { text-align:center; color:#555; font-size:12px; padding:15px; font-weight:bold; }
+@media(max-width:600px){ .btn-grid{ grid-template-columns:1fr; } .grid{ grid-template-columns:1fr; } .full{ grid-column:span 1; } }
+</style>
+</head>
+<body>
+
+<header>
+<h1>ABDUL-HAMEED ZAKARIA ESQ.</h1>
+<p>LAW FIRM MANAGEMENT SYSTEM</p>
+</header>
+<div class="date-bar" id="todayDate">Loading date...</div>
+
+<div class="container">
+<div class="stats">
+<div class="stat"><b id="totalClients">0</b><span>Total Clients</span></div>
+<div class="stat"><b id="activeCases">0</b><span>Active Cases</span></div>
+<div class="stat"><b id="wonCases">0</b><span>Cases Won</span></div>
+<div class="stat"><b id="totalFees">GH₵ 0</b><span>Total Fees</span></div>
+</div>
+
+<div class="dashboard">
+<h2>Dashboard - Choose What To Do</h2>
+<div class="btn-grid">
+<button onclick="showBox('register')">1. Register New Client</button>
+<button onclick="showBox('view')">2. View Clients</button>
+<button onclick="showBox('search')">3. Search Client</button>
+<button onclick="showBox('view')">4. Update Client</button>
+<button onclick="showBox('view')">5. Delete Client</button>
+<button onclick="showBox('report')">6. Case Report</button>
+<button onclick="saveAll()">7. Save Records</button>
+<button onclick="exportExcel()">8. Export to CSV</button>
+</div>
+</div>
+
+<div class="box show" id="box-register">
+<h3>📝 Register New Client</h3>
+<div class="grid">
+<input id="clientId" readonly placeholder="Client ID - Automatic">
+<input id="clientName" placeholder="Client Name *">
+<select id="gender"><option value="">Select Gender</option><option>Male</option><option>Female</option></select>
+<input id="phone" placeholder="Phone Number *">
+<input id="address" placeholder="Address / Location">
+<select id="caseType"><option value="">Select Case Type</option><option>Criminal Case</option><option>Civil Case</option><option>Land / Property Dispute</option><option>Family / Divorce</option><option>Business / Contract</option><option>Chieftaincy</option><option>Labour / Employment</option><option>Other</option></select>
+<input id="hearingDate" type="date">
+<select id="caseStatus"><option>Active</option><option>Pending</option><option>Won</option><option>Lost</option></select>
+<input id="legalFee" type="number" placeholder="Legal Fee (GH₵)">
+<input id="regDate" readonly>
+<textarea id="caseDesc" class="full" rows="3" placeholder="Case Description"></textarea>
+</div>
+<button class="btn-save" onclick="saveClient()">SAVE CLIENT</button>
+</div>
+
+<div class="box" id="box-search">
+<h3>🔍 Search Client</h3>
+<div class="top-row"><input id="searchBox" placeholder="Type Name, Phone or Case Type..." oninput="render()"></div>
+</div>
+
+<div class="box" id="box-view">
+<h3>📋 All Clients</h3>
+<div class="top-row">
+<select id="filterStatus" onchange="render()"><option value="">All Status</option><option>Active</option><option>Pending</option><option>Won</option><option>Lost</option></select>
+<button class="btn-export" onclick="exportExcel()">Export to Excel</button>
+</div>
+<div style="overflow-x:auto;"><table><thead><tr><th>ID</th><th>Client</th><th>Phone</th><th>Case Type</th><th>Hearing</th><th>Status</th><th>Fee</th><th>Action</th></tr></thead><tbody id="tableBody"></tbody></table></div>
+<p id="emptyMsg" style="text-align:center;color:#444;font-weight:bold;">No clients yet.</p>
+</div>
+
+<div class="box" id="box-report">
+<h3>📊 Case Report</h3>
+<p id="reportText" style="line-height:1.9;font-weight:bold;color:#0f2a44;"></p>
+</div>
+
+</div>
+<footer>© 2026 ABDUL-HAMEED ZAKARIA ESQ. | <span id="footerDate"></span></footer>
+
+<script>
+let today = new Date();
+let options = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+let dateStr = today.toLocaleDateString('en-GH', options);
+document.getElementById('todayDate').innerText = '📅 Today: ' + dateStr + '  |  Time: ' + today.toLocaleTimeString('en-GH');
+document.getElementById('footerDate').innerText = dateStr;
+document.getElementById('regDate').value = today.toISOString().split('T')[0];
+let clients = JSON.parse(localStorage.getItem('lawClients') || '[]');
+let editId = '';
+function showBox(name){
+  document.querySelectorAll('.box').forEach(b=>b.classList.remove('show'));
+  if(name=='register') document.getElementById('box-register').classList.add('show');
+  if(name=='view') document.getElementById('box-view').classList.add('show');
+  if(name=='search'){ document.getElementById('box-search').classList.add('show'); document.getElementById('box-view').classList.add('show'); }
+  if(name=='report'){ document.getElementById('box-report').classList.add('show'); updateReport(); }
+  window.scrollTo({top:400, behavior:'smooth'});
+}
+function generateId(){
+  let num = clients.length + 1;
+  return 'AHZ-' + String(num).padStart(4,'0');
+}
+document.getElementById('clientId').value = generateId();
+function saveClient(){
+  let name = document.getElementById('clientName').value.trim();
+  let phone = document.getElementById('phone').value.trim();
+  if(!name || !phone){ alert('Please enter Name and Phone'); return; }
+  let data = { id: editId || generateId(), name:name, gender:document.getElementById('gender').value, phone:phone, address:document.getElementById('address').value, caseType:document.getElementById('caseType').value, hearingDate:document.getElementById('hearingDate').value, status:document.getElementById('caseStatus').value, fee:document.getElementById('legalFee').value||0, desc:document.getElementById('caseDesc').value, regDate: dateStr };
+  if(editId){ let i=clients.findIndex(c=>c.id==editId); clients[i]=data; alert('Updated!'); } else { clients.push(data); alert('Saved!'); }
+  localStorage.setItem('lawClients', JSON.stringify(clients));
+  editId=''; clearForm(); render(); showBox('view');
+}
+function render(){
+  let search = (document.getElementById('searchBox')?.value||'').toLowerCase();
+  let filter = document.getElementById('filterStatus').value;
+  let filtered = clients.filter(c=> (c.name+' '+c.phone+' '+c.caseType).toLowerCase().includes(search) && (filter==''||c.status==filter));
+  document.getElementById('totalClients').innerText = clients.length;
+  document.getElementById('activeCases').innerText = clients.filter(c=>c.status=='Active').length;
+  document.getElementById('wonCases').innerText = clients.filter(c=>c.status=='Won').length;
+  document.getElementById('totalFees').innerText = 'GH₵ ' + clients.reduce((s,c)=>s+Number(c.fee||0),0).toLocaleString();
+  let html=''; filtered.forEach(c=>{ html+=`<tr><td>${c.id}</td><td><b>${c.name}</b><br><small>${c.gender} | ${c.address}<br>${c.desc||''}<br>Registered: ${c.regDate||''}</small></td><td>${c.phone}</td><td>${c.caseType}</td><td>${c.hearingDate||'-'}</td><td><span class="badge ${c.status}">${c.status}</span></td><td>${Number(c.fee).toLocaleString()}</td><td><button class="btn-edit" onclick="editClient('${c.id}')">Update</button> <button class="btn-del" onclick="deleteClient('${c.id}')">Delete</button></td></tr>`; });
+  document.getElementById('tableBody').innerHTML = html;
+  document.getElementById('emptyMsg').style.display = filtered.length?'none':'block';
+  updateReport();
+}
+function editClient(id){ let c=clients.find(x=>x.id==id); editId=c.id; document.getElementById('clientId').value=c.id; document.getElementById('clientName').value=c.name; document.getElementById('gender').value=c.gender; document.getElementById('phone').value=c.phone; document.getElementById('address').value=c.address; document.getElementById('caseType').value=c.caseType; document.getElementById('hearingDate').value=c.hearingDate; document.getElementById('caseStatus').value=c.status; document.getElementById('legalFee').value=c.fee; document.getElementById('caseDesc').value=c.desc; showBox('register'); window.scrollTo({top:0,behavior:'smooth'}); }
+function deleteClient(id){ if(confirm('Delete this client?')){ clients=clients.filter(c=>c.id!=id); localStorage.setItem('lawClients', JSON.stringify(clients)); render(); } }
+function clearForm(){ editId=''; ['clientName','phone','address','legalFee','caseDesc'].forEach(i=>document.getElementById(i).value=''); document.getElementById('gender').value=''; document.getElementById('caseType').value=''; document.getElementById('caseStatus').value='Active'; document.getElementById('clientId').value=generateId(); }
+function saveAll(){ localStorage.setItem('lawClients', JSON.stringify(clients)); alert('All Records Saved! Date: '+dateStr); }
+function updateReport(){ let total=clients.length; let act=clients.filter(c=>c.status=='Active').length; let won=clients.filter(c=>c.status=='Won').length; let lost=clients.filter(c=>c.status=='Lost').length; let fees=clients.reduce((s,c)=>s+Number(c.fee||0),0); document.getElementById('reportText').innerHTML = `<b>Date:</b> ${dateStr}<br><b>Total Clients:</b> ${total}<br><b>Active Cases:</b> ${act}<br><b>Won:</b> ${won} | <b>Lost:</b> ${lost}<br><b>Total Fees:</b> GH₵ ${fees.toLocaleString()}`; }
+function exportExcel(){ if(!clients.length){ alert('No data'); return; } let csv='ID,Name,Gender,Phone,Address,Case Type,Hearing Date,Status,Fee GHC,Description,Registration Date\n'; clients.forEach(c=>{ csv+=`"${c.id}","${c.name}","${c.gender}","${c.phone}","${c.address}","${c.caseType}","${c.hearingDate}","${c.status}","${c.fee}","${(c.desc||'').replace(/"/g,'')}","${c.regDate||''}"\n`; }); let blob=new Blob([csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='ABDUL-HAMEED-ZAKARIA-Clients.csv'; a.click(); }
+render();
+</script>
+</body>
+</html>
